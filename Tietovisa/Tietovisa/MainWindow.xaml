@@ -95,7 +95,7 @@
                         </StackPanel>
 
                         <StackPanel Height="30" Orientation="Horizontal">
-                            <Button Content="Ohje" Width="100" Height="25"/>
+                            <Button Content="Ohje" Width="100" Height="25" Click="Button_Click"/>
                         </StackPanel>
                         <!--Oikea alaalla-->
 

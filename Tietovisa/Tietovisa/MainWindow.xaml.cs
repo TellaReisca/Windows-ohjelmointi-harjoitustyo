@@ -24,5 +24,10 @@ namespace Tietovisa
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Saat kysymyksen, johon on neljä vastausta, joista yksi on oikein.");
+        }
     }
 }
