@@ -22,9 +22,14 @@
         </Grid.Background>
         <StackPanel Orientation="Vertical" Margin="0,0,0,0">
             <StackPanel Orientation="Vertical" Height="150">
-                <TextBox Margin="10" Height="130" Background="GhostWhite">
+                <!--
+                <TextBox x:Name="txtBoxQuestion" Margin="10" Height="130" Background="GhostWhite">
 
                 </TextBox>
+                -->
+                <DataGrid x:Name="dgQuestions" ItemsSource="{Binding Path=Content}">
+                    
+                </DataGrid>
             </StackPanel>
             <StackPanel Orientation="Vertical" Height="160">
                 <StackPanel Orientation="Horizontal">
