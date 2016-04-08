@@ -27,9 +27,9 @@
 
                 </TextBox>
                 -->
-                <DataGrid x:Name="dgQuestions" ItemsSource="{Binding Path=Content}">
+                <TextBox x:Name="tbQuestions" Height="130" Margin="10" FontSize="16">
                     
-                </DataGrid>
+                </TextBox>
             </StackPanel>
             <StackPanel Orientation="Vertical" Height="160">
                 <StackPanel Orientation="Horizontal">

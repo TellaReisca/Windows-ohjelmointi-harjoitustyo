@@ -33,6 +33,9 @@ namespace Tietovisa
             try
             {
                 
+                Random rand = new Random();
+                int randquest = rand.Next(0, 17);
+                
                 string connectionString = GetConnectionString();
                 string mysqlquery = "SELECT * FROM Question;";
 
@@ -44,7 +47,16 @@ namespace Tietovisa
                     MySqlDataAdapter adapter = new MySqlDataAdapter(command);
                     DataSet ds = new DataSet();
                     adapter.Fill(ds, "Content");
-                    dgQuestions.DataContext = ds;
+
+                    List<BLQA> qlist = new List<BLQA>();
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        qlist.Add(new BLQA { Content = Convert.ToString(dr["Content"]), QuestionKey = Convert.ToInt32(dr["QuestionKey"]) });
+                    }
+
+                    BLQA question1 = new BLQA();
+                    question1 = qlist[randquest];
+                    tbQuestions.Text = question1.Content;
                 }
             }
             catch (Exception ex)
