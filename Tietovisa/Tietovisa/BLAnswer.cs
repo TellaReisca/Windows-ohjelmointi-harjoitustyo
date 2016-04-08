@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Tietovisa
 {
-    class BLQA
+    class BLAnswer
     {
-        private int questionKey;
+        private int answerKey;
 
-        public int QuestionKey
+        public int AnswerKey
         {
-            get { return questionKey; }
-            set { questionKey = value; }
+            get { return answerKey; }
+            set { answerKey = value; }
         }
 
         private string content;
@@ -24,25 +24,35 @@ namespace Tietovisa
             set { content = value; }
         }
 
+        private int flag;
+
+        public int Flag
+        {
+            get { return flag; }
+            set { flag = value; }
+        }
+
         #region CONSTRUCTROS
 
-        public BLQA()
+        public BLAnswer()
         {
-           
+
         }
 
-        public BLQA(int questionKey, string content)
+        public BLAnswer(int answerKey, string content, int flag)
         {
-            this.questionKey = questionKey;
+            this.answerKey = answerKey;
             this.content = content;
+            this.flag = flag;
         }
+
+
 
         #endregion
 
         public string getString()
         {
-            return questionKey +" "+ content;
+            return answerKey + " " + content;
         }
-
     }
 }

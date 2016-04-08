@@ -34,29 +34,60 @@ namespace Tietovisa
             {
                 
                 Random rand = new Random();
-                int randquest = rand.Next(0, 17);
+                int randquest = rand.Next(0, 16);
+                int random = randquest;
                 
                 string connectionString = GetConnectionString();
-                string mysqlquery = "SELECT * FROM Question;";
+                string questionquery = "SELECT * FROM Question WHERE QuestionKey="+random+";";
+                string answerquery = "SELECT * FROM Answer WHERE Question_QuestionKey="+random+";";
 
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    DataTable dt = new DataTable();
-                    MySqlCommand command = new MySqlCommand(mysqlquery, conn);
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-                    DataSet ds = new DataSet();
-                    adapter.Fill(ds, "Content");
+                    
+                    MySqlCommand qcommand = new MySqlCommand(questionquery, conn);
+                    MySqlDataAdapter qadapter = new MySqlDataAdapter(qcommand);
+                    DataSet qds = new DataSet();
+                    qadapter.Fill(qds, "Content");
 
-                    List<BLQA> qlist = new List<BLQA>();
-                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    List<BLQuestion> qlist = new List<BLQuestion>();
+                    foreach (DataRow qdr in qds.Tables[0].Rows)
                     {
-                        qlist.Add(new BLQA { Content = Convert.ToString(dr["Content"]), QuestionKey = Convert.ToInt32(dr["QuestionKey"]) });
+                        qlist.Add(new BLQuestion { Content = Convert.ToString(qdr["Content"]), QuestionKey = Convert.ToInt32(qdr["QuestionKey"]) });
                     }
 
-                    BLQA question1 = new BLQA();
-                    question1 = qlist[randquest];
+                    BLQuestion question1 = new BLQuestion();
+                    question1 = qlist[0];
                     tbQuestions.Text = question1.Content;
+
+                    
+                    MySqlCommand acommand = new MySqlCommand(answerquery, conn);
+                    MySqlDataAdapter aadapter = new MySqlDataAdapter(acommand);
+                    DataSet ads = new DataSet();
+                    aadapter.Fill(ads, "Content");
+
+                    List<BLAnswer> alist = new List<BLAnswer>();
+                    foreach (DataRow adr in ads.Tables[0].Rows)
+                    {
+                        alist.Add(new BLAnswer { Content = Convert.ToString(adr["Content"]), AnswerKey = Convert.ToInt32(adr["AnswerKey"]), Flag = Convert.ToInt32(adr["Flag"]) });
+                    }
+
+                    BLAnswer answer1 = new BLAnswer();
+                    answer1 = alist[0];
+                    btnAnswer1.Content = answer1.Content;
+
+                    BLAnswer answer2 = new BLAnswer();
+                    answer2 = alist[1];
+                    btnAnswer2.Content = answer2.Content;
+
+                    BLAnswer answer3 = new BLAnswer();
+                    answer3 = alist[2];
+                    btnAnswer3.Content = answer3.Content;
+
+                    BLAnswer answer4 = new BLAnswer();
+                    answer4 = alist[3];
+                    btnAnswer4.Content = answer4.Content;
+
                 }
             }
             catch (Exception ex)
