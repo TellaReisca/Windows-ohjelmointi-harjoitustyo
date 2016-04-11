@@ -34,7 +34,7 @@
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Width="300" Height="170">
                         <!--Vasen alaalla-->
-                        <Button x:Name="btnAnswer1" Content="Vastaus 1" Margin="5" Height="30" Background="#FF00FFE8" BorderThickness="3" Opacity="0.95" >
+                        <Button x:Name="btnAnswer1" Content="Vastaus 1" Margin="5" Height="30" Background="#FF00FFE8" BorderThickness="3" Opacity="0.95" Click="btnAnswer1_Click" >
                             <Button.BorderBrush>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="Black" Offset="0"/>
@@ -48,7 +48,7 @@
                             </Button.Effect>
                         </Button>
 
-                        <Button x:Name="btnAnswer2" Content="Vastaus 1" Margin="5" Height="30" Background="#FF00FFE8" BorderThickness="3" Opacity="0.95" >
+                        <Button x:Name="btnAnswer2" Content="Vastaus 2" Margin="5" Height="30" Background="#FF00FFE8" BorderThickness="3" Opacity="0.95" Click="btnAnswer2_Click" >
                             <Button.BorderBrush>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="Black" Offset="0"/>
@@ -62,7 +62,7 @@
                             </Button.Effect>
                         </Button>
 
-                        <Button x:Name="btnAnswer3" Content="Vastaus 1" Margin="5" Height="30" Background="#FF00FFE8" BorderThickness="3" Opacity="0.95" >
+                        <Button x:Name="btnAnswer3" Content="Vastaus 3" Margin="5" Height="30" Background="#FF00FFE8" BorderThickness="3" Opacity="0.95" Click="btnAnswer3_Click" >
                             <Button.BorderBrush>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="Black" Offset="0"/>
@@ -76,7 +76,7 @@
                             </Button.Effect>
                         </Button>
 
-                        <Button x:Name="btnAnswer4" Content="Vastaus 1" Margin="5" Height="30" Background="#FF00FFE8" BorderThickness="3" Opacity="0.95" >
+                        <Button x:Name="btnAnswer4" Content="Vastaus 4" Margin="5" Height="30" Background="#FF00FFE8" BorderThickness="3" Opacity="0.95" Click="btnAnswer4_Click" >
                             <Button.BorderBrush>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="Black" Offset="0"/>
@@ -93,9 +93,10 @@
                     </StackPanel>
                     <StackPanel Width="220" Height="170" HorizontalAlignment="Left">
                         <StackPanel Height="130">
-                            <TextBlock Margin="5" FontSize="15" Text="Pelaaja: "/>
-                            <TextBlock Margin="5" FontSize="20" Text="Pelin nimi:"/>
-                            <TextBlock Margin="5" FontSize="20" Text="Pisteesi: 0"/>
+                            <TextBlock Margin="10,5,0,5" FontSize="15" Text="Pelaaja: "/>
+                            <TextBlock Margin="10,5,0,5" FontSize="20" Text="Pelin nimi:"/>
+                            <TextBlock x:Name="tbPisteet" Margin="10,5,0,5" FontSize="20" Text="Pisteesi: 0"/>
+                            <TextBlock x:Name="tbOV"  Margin="10,5,0,5" FontSize="15" FontWeight="Bold" FontFamily="Franklin Gothic Demi" />
                         </StackPanel>
 
                         <StackPanel Height="30" Orientation="Horizontal">
