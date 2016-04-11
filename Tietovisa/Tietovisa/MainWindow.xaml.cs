@@ -22,7 +22,7 @@ namespace Tietovisa
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BLAnswer answer1;
+        private BLAnswer answer1; //Vastaus oliot luodaan jo täällä jotta ne olisi käytettävissä buttosissa.
         private BLAnswer answer2;
         private BLAnswer answer3;
         private BLAnswer answer4;
@@ -40,7 +40,7 @@ namespace Tietovisa
             try
             {
 
-                string connectionString = GetConnectionString();
+                string connectionString = GetConnectionString(); //Hakee yhteysloitsun
 
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
@@ -66,7 +66,7 @@ namespace Tietovisa
                 {
                     Random rand = new Random();
                     int randquest = rand.Next(0, 16);
-                    int random = randquest;
+                    int random = randquest; //näin saadaan pidettyä randomi-arvo samana yhteen kysymykseen tarvittavan MySQL -kyselyn aikana.
 
 
                     string questionquery = "SELECT * FROM Question WHERE QuestionKey=" + random + ";";
@@ -77,7 +77,7 @@ namespace Tietovisa
                     DataSet qds = new DataSet();
                     qadapter.Fill(qds, "Content");
 
-                    List<BLQuestion> qlist = new List<BLQuestion>();
+                    List<BLQuestion> qlist = new List<BLQuestion>(); //Käytetään linq-kyselyä jotta saadaan täytettyä kysymys ohjelman sisäiseen listaan
                     foreach (DataRow qdr in qds.Tables[0].Rows)
                     {
                         qlist.Add(new BLQuestion { Content = Convert.ToString(qdr["Content"]), QuestionKey = Convert.ToInt32(qdr["QuestionKey"]) });
@@ -93,7 +93,7 @@ namespace Tietovisa
                     DataSet ads = new DataSet();
                     aadapter.Fill(ads, "Content");
 
-                    List<BLAnswer> alist = new List<BLAnswer>();
+                    List<BLAnswer> alist = new List<BLAnswer>(); //Käytetään linq-kyselyä jotta saadaan täytettyä listaan kaikki kysymyksen vastaukset
                     foreach (DataRow adr in ads.Tables[0].Rows)
                     {
                         alist.Add(new BLAnswer { Content = Convert.ToString(adr["Content"]), AnswerKey = Convert.ToInt32(adr["AnswerKey"]), Flag = Convert.ToInt32(adr["Flag"]) });
@@ -117,7 +117,7 @@ namespace Tietovisa
 
             catch(Exception ex)
             {
-                MessageBox.Show("Jotain tapahtui. Yritä uudelleen!");
+                MessageBox.Show("Jotain tapahtui. Yritä uudelleen!"); //Ohjelmalla on sillon tällöin ongelmia käydessään tämä metodi. Tämä ei kuitenkaan vaikuta pelaamiseen kauheasti.
             }
         }
 
@@ -128,12 +128,10 @@ namespace Tietovisa
 
         static string GetConnectionString()
         {
-            /*return Tietovisa.Properties.Settings.Default.dataSource;*/
-            /*return @"Data source=mysql.labranet.jamk.fi;Initial Catalog=salesa;user=salesa;password=fyEfchdior3MZlrcjz6U27L0aiNolowl;";*/
-            return @"Data source=mysql.labranet.jamk.fi;Initial Catalog=H8510;user=H8510;password=4FCgJB6skri1KocsV08cwkGPbRYzmqWE;"; // Miksi ei toimi appconfigista
+            return @"Data source=mysql.labranet.jamk.fi;Initial Catalog=H8510;user=H8510;password=4FCgJB6skri1KocsV08cwkGPbRYzmqWE;"; // Miksi ei toimi appconfigista?
         }
 
-        private void btnAnswer1_Click(object sender, RoutedEventArgs e)
+        private void btnAnswer1_Click(object sender, RoutedEventArgs e) //buttonit vastauksille
         {
             if(answer1.Flag == 1)
             {
