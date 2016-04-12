@@ -10,205 +10,122 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MySql.Data.MySqlClient;
 using System.Data;
+using System.Data.SqlClient;
+using System.Text.RegularExpressions;
+using MySql.Data.MySqlClient;
 
 namespace Tietovisa
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Login.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BLAnswer answer1; //Vastaus oliot luodaan jo täällä jotta ne olisi käytettävissä buttosissa.
-        private BLAnswer answer2;
-        private BLAnswer answer3;
-        private BLAnswer answer4;
-        int pisteet = 0;
+        
 
         public MainWindow()
         {
             InitializeComponent();
-            ConnectToMySQL();
-            
+
         }
 
-        void ConnectToMySQL()
+        private void button_Click(object sender, RoutedEventArgs e)
         {
+            if (uNameBox.Text.Length == 0)
+            {
+                tbLogin.Foreground = Brushes.Aquamarine;
+                tbLogin.Text = "Please enter an username and a password";
+                uNameBox.Focus();
+            }
+            else
+            {
+                string username = uNameBox.Text;
+                string password = passwordBox.Password;
+            }
             try
             {
+                string myConnection = "Data source=mysql.labranet.jamk.fi;Initial Catalog=H8510;user=H8510;password=4FCgJB6skri1KocsV08cwkGPbRYzmqWE;";
+                string keyQuery = "SELECT UserKey FROM User WHERE Name'" + uNameBox.Text + "';";
+                MySqlConnection con = new MySqlConnection(myConnection);
+                
+                MySqlCommand SelectCommand = new MySqlCommand("SELECT * FROM User WHERE Name='" + this.uNameBox.Text + "' and Password='" + this.passwordBox.Password + "' ;", con);
 
-                string connectionString = GetConnectionString(); //Hakee yhteysloitsun
+               
 
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                MySqlDataReader myReader;
+                con.Open();
+                myReader = SelectCommand.ExecuteReader();
+                
+                
+                int count = 0;
+                while (myReader.Read())
                 {
-                    conn.Open();
-                    NewQuestion();
+                    count = count + 1;
+                }
+                if (count == 1)
+                {
+                    tbLogin.Foreground = Brushes.YellowGreen;
+                    tbLogin.Text = "Correct username and password!";
+                    Window1 secondary = new Window1();
+                    secondary.ShowDialog();
+                    
+                }
+                else if (count > 1)
+                {
+                    tbLogin.Foreground = Brushes.Red;
+                    tbLogin.Text = "Duplicate username and password ... Access denied!";
+                    
+                }
+                else
+                {
+                    tbLogin.Foreground = Brushes.Red;
+                    tbLogin.Text = "Wrong username and password ... Access denied!";
+                    con.Close();
                 }
             }
             catch (Exception ex)
-
             {
-                MessageBox.Show(ex.ToString());
+
+                MessageBox.Show(ex.Message);
             }
+
 
         }
 
-
-        public void NewQuestion()
+        private void button1_Click(object sender, RoutedEventArgs e)
         {
+            if (uNameBox.Text.Length == 0)
+            {
+                MessageBox.Show("Enter an username");
+                uNameBox.Focus();
+            }
+            else
+            {
+                string registername = registerBox.Text;
+                string registerpassword = passwordRegBox.Password;
+            }
             try
             {
-                string connectionString = GetConnectionString();
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
-                {
-                    Random rand = new Random();
-                    int randquest = rand.Next(0, 16);
-                    int random = randquest; //näin saadaan pidettyä randomi-arvo samana yhteen kysymykseen tarvittavan MySQL -kyselyn aikana.
+                string myConnection = "Data source=mysql.labranet.jamk.fi;Initial Catalog=H8510;user=H8510;password=4FCgJB6skri1KocsV08cwkGPbRYzmqWE;";
+                MySqlConnection con = new MySqlConnection(myConnection);
 
+                MySqlCommand InsertCommand = new MySqlCommand("insert into User(Name, Password) values ('" + this.registerBox.Text + "','" + this.passwordRegBox.Password + "');", con);//insert into User(Name, Password) values ('Arska','sala1');
 
-                    string questionquery = "SELECT * FROM Question WHERE QuestionKey=" + random + ";";
-                    string answerquery = "SELECT * FROM Answer WHERE Question_QuestionKey=" + random + ";";
+                MySqlDataReader myReader;
+                con.Open();
+                myReader = InsertCommand.ExecuteReader();
+                MessageBox.Show("Rekisteröinti onnistui!");
 
-                    MySqlCommand qcommand = new MySqlCommand(questionquery, conn);
-                    MySqlDataAdapter qadapter = new MySqlDataAdapter(qcommand);
-                    DataSet qds = new DataSet();
-                    qadapter.Fill(qds, "Content");
-
-                    List<BLQuestion> qlist = new List<BLQuestion>(); //Käytetään linq-kyselyä jotta saadaan täytettyä kysymys ohjelman sisäiseen listaan
-                    foreach (DataRow qdr in qds.Tables[0].Rows)
-                    {
-                        qlist.Add(new BLQuestion { Content = Convert.ToString(qdr["Content"]), QuestionKey = Convert.ToInt32(qdr["QuestionKey"]) });
-                    }
-
-                    BLQuestion question1 = new BLQuestion();
-                    question1 = qlist[0];
-                    tbQuestions.Text = question1.Content;
-
-
-                    MySqlCommand acommand = new MySqlCommand(answerquery, conn);
-                    MySqlDataAdapter aadapter = new MySqlDataAdapter(acommand);
-                    DataSet ads = new DataSet();
-                    aadapter.Fill(ads, "Content");
-
-                    List<BLAnswer> alist = new List<BLAnswer>(); //Käytetään linq-kyselyä jotta saadaan täytettyä listaan kaikki kysymyksen vastaukset
-                    foreach (DataRow adr in ads.Tables[0].Rows)
-                    {
-                        alist.Add(new BLAnswer { Content = Convert.ToString(adr["Content"]), AnswerKey = Convert.ToInt32(adr["AnswerKey"]), Flag = Convert.ToInt32(adr["Flag"]) });
-                    }
-
-                    answer1 = alist[0];
-                    btnAnswer1.Content = answer1.Content;
-
-                    answer2 = alist[1];
-                    btnAnswer2.Content = answer2.Content;
-
-                    answer3 = alist[2];
-                    btnAnswer3.Content = answer3.Content;
-
-                    answer4 = alist[3];
-                    btnAnswer4.Content = answer4.Content;
-                }
-                
-            
             }
-
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Jotain tapahtui. Yritä uudelleen!"); //Ohjelmalla on sillon tällöin ongelmia käydessään tämä metodi. Tämä ei kuitenkaan vaikuta pelaamiseen kauheasti.
-            }
-        }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Kysymyksen saatuasi, paina jotain neljästä vastausvaihtoehdosta.");
-        }
+                MessageBox.Show(ex.Message);
+            }
 
-        static string GetConnectionString()
-        {
-            return @"Data source=mysql.labranet.jamk.fi;Initial Catalog=H8510;user=H8510;password=4FCgJB6skri1KocsV08cwkGPbRYzmqWE;"; // Miksi ei toimi appconfigista?
-        }
-
-        private void btnAnswer1_Click(object sender, RoutedEventArgs e) //buttonit vastauksille
-        {
-            if(answer1.Flag == 1)
-            {
-                pisteet = pisteet + 1;
-                tbPisteet.Text = "Pisteesi: " + pisteet;
-                tbOV.Foreground = Brushes.GreenYellow;
-                tbOV.Text = "OIKEIN!";
-                NewQuestion();
-            }
-            else
-            {
-                tbOV.Foreground = Brushes.Red;
-                tbOV.Text = "VÄÄRIN! PELI OHI!";
-                pisteet = 0;
-                tbPisteet.Text = "Pisteesi: " + pisteet;
-                NewQuestion();
-            }
-        }
-
-        private void btnAnswer2_Click(object sender, RoutedEventArgs e)
-        {
-            if (answer2.Flag == 1)
-            {
-                pisteet = pisteet + 1;
-                tbPisteet.Text = "Pisteesi: " + pisteet;
-                tbOV.Foreground = Brushes.GreenYellow;
-                tbOV.Text = "OIKEIN!";
-                NewQuestion();
-            }
-            else
-            {
-                tbOV.Foreground = Brushes.Red;
-                tbOV.Text = "VÄÄRIN! PELI OHI!";
-                pisteet = 0;
-                tbPisteet.Text = "Pisteesi: " + pisteet;
-                NewQuestion();
-            }
-        }
-
-        private void btnAnswer3_Click(object sender, RoutedEventArgs e)
-        {
-            if (answer3.Flag == 1)
-            {
-                pisteet = pisteet + 1;
-                tbPisteet.Text = "Pisteesi: " + pisteet;
-                tbOV.Foreground = Brushes.GreenYellow;
-                tbOV.Text = "OIKEIN!";
-                NewQuestion();
-            }
-            else
-            {
-                tbOV.Foreground = Brushes.Red;
-                tbOV.Text = "VÄÄRIN! PELI OHI!";
-                pisteet = 0;
-                tbPisteet.Text = "Pisteesi: " + pisteet;
-                NewQuestion();
-            }
-        }
-
-        private void btnAnswer4_Click(object sender, RoutedEventArgs e)
-        {
-            if (answer4.Flag == 1)
-            {
-                pisteet = pisteet + 1;
-                tbPisteet.Text = "Pisteesi: " + pisteet;
-                tbOV.Foreground = Brushes.GreenYellow;
-                tbOV.Text = "OIKEIN!";
-                NewQuestion();
-            }
-            else
-            {
-                tbOV.Foreground = Brushes.Red;
-                tbOV.Text = "VÄÄRIN! PELI OHI!";
-                pisteet = 0;
-                tbPisteet.Text = "Pisteesi: " + pisteet;
-                NewQuestion();
-            }
         }
     }
 }
+

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tietovisa"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Login" Height="350" Width="525">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="Black" Offset="0"/>
@@ -20,94 +20,41 @@
                 <GradientStop Color="#FFD0F007"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <StackPanel Orientation="Vertical" Margin="0,0,0,0">
-            <StackPanel Orientation="Vertical" Height="150">
-                <!--
-                <TextBox x:Name="txtBoxQuestion" Margin="10" Height="130" Background="GhostWhite">
-
-                </TextBox>
-                -->
-                <TextBox x:Name="tbQuestions" Height="130" Margin="10" FontSize="16" IsReadOnly="True" TextWrapping="WrapWithOverflow"/>
-    
+        <StackPanel Orientation="Vertical"> <!--vertikaalilistäkki-->
+            <StackPanel Height="100"> <!--ylempi-->
+                <StackPanel>
+                    <Label x:Name="label" Content="Näsävisa" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="48" FontFamily="Goudy Stout" Foreground="#FF9624A8" Margin="20"/>
+                </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Height="160">
+            <StackPanel Height="220"> <!--alempi-->
                 <StackPanel Orientation="Horizontal">
-                    <StackPanel Width="300" Height="170">
-                        <!--Vasen alaalla-->
-                        <Button x:Name="btnAnswer1" Content="Vastaus 1" Margin="5" Height="30" Background="#FF00FFE8" BorderThickness="3" Opacity="0.95" Click="btnAnswer1_Click" >
-                            <Button.BorderBrush>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="Black" Offset="0"/>
-                                    <GradientStop Color="#FFFFF800" Offset="1"/>
-                                    <GradientStop Color="#FFFF9700"/>
-                                    <GradientStop Color="#FFFFF700" Offset="0.996"/>
-                                </LinearGradientBrush>
-                            </Button.BorderBrush>
-                            <Button.Effect>
-                                <DropShadowEffect Color="#FFFF0498" BlurRadius="10"/>
-                            </Button.Effect>
-                        </Button>
-
-                        <Button x:Name="btnAnswer2" Content="Vastaus 2" Margin="5" Height="30" Background="#FF00FFE8" BorderThickness="3" Opacity="0.95" Click="btnAnswer2_Click" >
-                            <Button.BorderBrush>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="Black" Offset="0"/>
-                                    <GradientStop Color="#FFFFF800" Offset="1"/>
-                                    <GradientStop Color="#FFFF9700"/>
-                                    <GradientStop Color="#FFFFF700" Offset="0.996"/>
-                                </LinearGradientBrush>
-                            </Button.BorderBrush>
-                            <Button.Effect>
-                                <DropShadowEffect Color="#FFFF0498" BlurRadius="10"/>
-                            </Button.Effect>
-                        </Button>
-
-                        <Button x:Name="btnAnswer3" Content="Vastaus 3" Margin="5" Height="30" Background="#FF00FFE8" BorderThickness="3" Opacity="0.95" Click="btnAnswer3_Click" >
-                            <Button.BorderBrush>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="Black" Offset="0"/>
-                                    <GradientStop Color="#FFFFF800" Offset="1"/>
-                                    <GradientStop Color="#FFFF9700"/>
-                                    <GradientStop Color="#FFFFF700" Offset="0.996"/>
-                                </LinearGradientBrush>
-                            </Button.BorderBrush>
-                            <Button.Effect>
-                                <DropShadowEffect Color="#FFFF0498" BlurRadius="10"/>
-                            </Button.Effect>
-                        </Button>
-
-                        <Button x:Name="btnAnswer4" Content="Vastaus 4" Margin="5" Height="30" Background="#FF00FFE8" BorderThickness="3" Opacity="0.95" Click="btnAnswer4_Click" >
-                            <Button.BorderBrush>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="Black" Offset="0"/>
-                                    <GradientStop Color="#FFFFF800" Offset="1"/>
-                                    <GradientStop Color="#FFFF9700"/>
-                                    <GradientStop Color="#FFFFF700" Offset="0.996"/>
-                                </LinearGradientBrush>
-                            </Button.BorderBrush>
-                            <Button.Effect>
-                                <DropShadowEffect Color="#FFFF0498" BlurRadius="10"/>
-                            </Button.Effect>
-                        </Button>
-
+                    <StackPanel Width="165" Height="220">
+                        
                     </StackPanel>
-                    <StackPanel Width="220" Height="170" HorizontalAlignment="Left">
-                        <StackPanel Height="130">
-                            <TextBlock Margin="10,5,0,5" FontSize="15" Text="Pelaaja: "/>
-                            <TextBlock Margin="10,5,0,5" FontSize="20" Text="Pelin nimi:"/>
-                            <TextBlock x:Name="tbPisteet" Margin="10,5,0,5" FontSize="20" Text="Pisteesi: 0"/>
-                            <TextBlock x:Name="tbOV"  Margin="10,5,0,5" FontSize="15" FontWeight="Bold" FontFamily="Franklin Gothic Demi" />
+                    <StackPanel Orientation="Vertical" Width="175" Height="220">
+                        <StackPanel Height="91" VerticalAlignment="Top">
+                            <Label x:Name="LabelK" Content="Kirjaudu" HorizontalAlignment="Center"/>
+                            <TextBox x:Name="uNameBox" Height="23" TextWrapping="Wrap" Text="Käyttäjänimi"/>
+                            <PasswordBox x:Name="passwordBox"/>
+                            <Button x:Name="button" Content="Login" Click="button_Click"/>
                         </StackPanel>
-
-                        <StackPanel Height="30" Orientation="Horizontal">
-                            <Button Content="Ohje" Width="100" Height="25" Click="Button_Click"/>
+                        <StackPanel>
+                            <Label x:Name="LabelR" Content="Rekisteröidy" HorizontalAlignment="Center"/>
+                            <TextBox x:Name="registerBox" Height="23" TextWrapping="Wrap" Text="Käyttäjänimi"/>
+                            <PasswordBox x:Name="passwordRegBox"/>
+                            <Button x:Name="button1" Content="Register" Click="button1_Click"/>
                         </StackPanel>
-                        <!--Oikea alaalla-->
-
+                        <StackPanel>
+                            <TextBlock x:Name="tbLogin" Height="30" FontSize="12" Margin="2" FontWeight="Bold" FontFamily="Franklin Gothic Demi"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Width="175" Height="220">
 
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
+        
+        
     </Grid>
 </Window>
